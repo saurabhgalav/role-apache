@@ -1,0 +1,12 @@
+packages:
+       backend: httpd
+
+       haproxy: haproxy
+
+service:
+       backend: httpd
+
+       haproxy: haproxy
+        
+
+                       

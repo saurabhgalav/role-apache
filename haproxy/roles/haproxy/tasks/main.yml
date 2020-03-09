@@ -1,0 +1,32 @@
+- name: install apache pkg
+  yum:
+    name: "{{ packages['backend'] }}"
+    state: latest
+  when: inventory_hostname in groups['backend']
+  notify: restart apache
+
+- name: install haproxy
+  yum:
+    name: "{{ packages['haproxy'] }}"
+    state: latest
+  when: inventory_hostname in groups['haproxy']
+  notify: restart haproxy
+
+- name: copy index file
+  template: 
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  when: inventory_hostname in groups['backend']
+  notify: config firewall
+
+
+
+- name: copy config file
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  when: inventory_hostname in groups['haproxy']
+  notify: config haproxy firewall
+
+
+

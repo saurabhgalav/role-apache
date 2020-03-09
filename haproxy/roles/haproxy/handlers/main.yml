@@ -1,0 +1,58 @@
+- name: restart apache
+  service: 
+    name: "{{ service['backend'] }}"
+    state: restarted
+    enabled: true
+  when: inventory_hostname in groups['backend']
+
+- name: restart haproxy
+  service:
+    name: "{{ service['haproxy'] }}"
+    state: restarted
+    enabled: true
+  when: inventory_hostname in groups['haproxy']
+
+- name: config firewall
+  firewalld:
+    service: http
+    state: enabled
+    permanent: true
+    immediate: true
+  when: inventory_hostname in groups['backend']
+
+- name: config haproxy firewall
+  firewalld:
+    service:  http
+    state: enabled
+    permanent: true
+    immediate: true
+  when: inventory_hostname in groups['haproxy']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
